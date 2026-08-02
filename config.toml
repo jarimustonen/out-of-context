@@ -1,0 +1,21 @@
+# Zola configuration for out-of-context.dev
+# https://www.getzola.org/documentation/getting-started/configuration/
+
+base_url = "https://out-of-context.dev"
+title = "Out of Context"
+description = "Ilta sinulle joka luot AI:lla. Demoja, ei kalvoja."
+default_language = "fi"
+
+compile_sass = false
+build_search_index = false
+minify_html = true
+
+generate_feeds = false
+
+taxonomies = []
+
+[markdown]
+smart_punctuation = false
+
+[extra]
+author = "Jari Mustonen"

@@ -1,0 +1,130 @@
+# issuectl frontmatter schema (v1) — auto-generated; safe to edit and commit.
+#
+# Each field declares whether it is required and (optionally) an `enum`
+# of allowed values. Declare a custom field below to make `doctor` and
+# the mutation commands enforce it.
+#
+# - `required: true`   → an issue missing this field fails validation.
+# - `enum: [a, b, c]`  → only those values are accepted.
+# - `list: true`       → field is a list; `enum` applies element-wise.
+#
+# Merge semantics: this file is layered on top of the built-in default
+# schema. To override a built-in field, redeclare it here (your full
+# `FieldSpec` replaces the built-in one). To add a custom field, just
+# add an entry. Unknown fields in an issue are NOT errors, so agents
+# can attach extra metadata freely.
+#
+# `created` is intentionally NOT required by default — repos that
+# pre-date schema enforcement may have issues without it. Set it to
+# `required: true` once you are sure all issues have it (run
+# `issuectl doctor` first).
+version: 1
+fields:
+  type:
+    required: true
+    enum: [bug, task, feature, improvement, chore, epic]
+  status:
+    required: true
+    enum:
+      - open
+      - in-progress
+      - testing
+      - done
+      - fixed
+      - wontfix
+      - duplicate
+      - cannot-reproduce
+      - obsolete
+  priority:
+    required: true
+    enum: [normal, high]
+  created:
+    required: false
+  updated:
+    required: false
+  reporter:
+    required: false
+  assignee:
+    required: false
+  owner:
+    required: false
+  reviewer:
+    required: false
+  review_status:
+    required: false
+    enum: [requested, in-review, approved, changes-requested]
+  # Lightweight estimates. Declare either `size` OR `estimate` on an
+  # issue, not both — the schema can't express the mutual-exclusion
+  # rule directly, but `issuectl workload` / `burndown` will flag any
+  # issue carrying both. `size` is a fixed four-value enum; `estimate`
+  # is a free-form numeric (story points) and is intentionally NOT
+  # declared here because the v1 schema validator is string-typed and
+  # would reject `estimate: 5` (a YAML number). Unknown fields pass
+  # validation, so the numeric form rides through. See
+  # `crates/issuectl-core/src/estimate.rs`.
+  size:
+    required: false
+    enum: [S, M, L, XL]
+  epic:
+    required: false
+  related:
+    required: false
+    list: true
+  blocked_by:
+    required: false
+    list: true
+  labels:
+    required: false
+    list: true
+    # enum: [infra, frontend, backend]   # uncomment to constrain labels
+  closed:
+    required: false
+    # `closed:` is conditionally required: any issue whose status is
+    # classified `closing` (see `status_classes` below) must carry a
+    # `closed:` date. Declared here so schema validation and `doctor`
+    # enforce the same lifecycle rule instead of leaving it implicit.
+    required_when:
+      status_class: closing
+  slug:
+    required: false
+  # `commits` is intentionally not declared: it is a list of mapping
+  # entries (`{hash, summary}`), which the v1 schema's scalar/list-of-
+  # string model cannot describe. Unknown fields are allowed, so it
+  # passes validation either way.
+
+# Lifecycle classification for status values. Built-in statuses
+# (`open`, `in-progress`, `testing` → active; `done`, `fixed`, `wontfix`,
+# `duplicate`, `cannot-reproduce`, `obsolete` → closing) are classified
+# automatically. Add a status's class here to extend the taxonomy with
+# a custom status (e.g. `archived`), or to *override* a built-in
+# (e.g. `done: active` if your workflow treats `done` as in-progress).
+# Closing statuses get the `closed:` stamp, end up in the closed
+# bucket, and pass doctor's open/closed consistency check the same way
+# `done` does.
+#
+# status_classes:
+#   archived: closing
+#   verified: active
+
+# Legacy-value aliases for `doctor --fix` migration. When an issue's
+# `status` or `type` equals a key below, `doctor --fix` rewrites it to
+# the mapped canonical value (and, for a status that becomes a closing
+# status, stamps a `closed:` date if one is missing). Built-in defaults
+# cover the most common pre-0.5.1 values surfaced in migration feedback;
+# add your own to extend, or restate a key to override its target. Only
+# `doctor --fix` consumes this map — the regular mutation commands still
+# reject out-of-enum values, so an unaliased typo never slips through.
+#
+# Only unambiguous synonyms are built in. Work-pause states such as
+# `paused` / `blocked` are deliberately NOT mapped: the canonical status
+# set has no equivalent, so coercing them to `in-progress` would
+# misrepresent intent and lose information. A repo that wants them
+# handled should add its own mapping (or a custom status via
+# `status_classes`) below.
+status_aliases:
+  closed: done
+  resolved: fixed
+  in_progress: in-progress
+type_aliases:
+  enhancement: improvement
+  refactor: chore
