@@ -3,3 +3,6 @@ history/
 
 # Zola build output
 public/
+
+# Wrangler (Cloudflare Pages) cache/tmp
+.wrangler/
