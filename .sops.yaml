@@ -1,0 +1,30 @@
+# SOPS configuration for out-of-context
+#
+# Single admin tier for now — all encrypted secrets (`*.enc.{yaml,json,env}`)
+# are encrypted to Jari's two age keys. As the project becomes community-owned,
+# add each maintainer's age public key to the creation_rules below and re-encrypt
+# (`sops updatekeys <file>`).
+#
+# Naming convention: .enc.yaml / .enc.json / .enc.env
+#
+# See operations/secrets/AGENTS.md for the full workflow.
+
+creation_rules:
+  - path_regex: ^.*\.enc\.(yaml|json|env)$
+    age: >-
+      age1pqp0v6qud65tdprjdk093j4e86unk86jmtsdh283ldc0l34k4g5qkzy4et,
+      age1ek642aeexvjds0ht9enpgu4ygdwc6r9pnm7ewp9hhvgpex4hqaxq2p44wj
+
+# Age public keys reference:
+#   Jari Mustonen
+#     pöytäkone (2025-07-25): age1pqp0v6qud65tdprjdk093j4e86unk86jmtsdh283ldc0l34k4g5qkzy4et
+#     läppäri   (2026-03-09): age1ek642aeexvjds0ht9enpgu4ygdwc6r9pnm7ewp9hhvgpex4hqaxq2p44wj
+#
+# To add a maintainer:
+#   1. They generate an age keypair to a file (never bare `age-keygen`, which
+#      prints the private key to stdout):
+#        mkdir -p ~/.config/sops/age && age-keygen -o ~/.config/sops/age/keys.txt
+#        age-keygen -y ~/.config/sops/age/keys.txt   # prints only the public age1... key
+#   2. They append their public `age1...` key to the `age:` list above and
+#      commit + push .sops.yaml (never the private key).
+#   3. An existing key holder re-encrypts: `sops updatekeys <file>` and commits.

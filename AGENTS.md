@@ -12,20 +12,25 @@ the intent is a community-owned public repo with PRs.
 - **No backend, no build step beyond Zola, no cookies, no analytics.** The page
   is a single self-contained HTML document with inline CSS + a tiny FI/EN toggle
   script. Only external dependency is Google Fonts (Archivo).
-- **Deployment**: static hosting (Cloudflare Pages, same pattern as frondeo.ai) —
-  not yet wired up.
+- **Deployment**: Cloudflare Pages via `./deploy.sh` (see Deployment below).
 
 ## Structure
 
 ```
 out-of-context/
 ├── config.toml            # Zola config (base_url, title, description)
+├── deploy.sh              # zola build → Cloudflare Pages
+├── .sops.yaml             # age recipients for encrypted secrets
 ├── content/
 │   └── _index.md          # Homepage — template = "index.html", holds meta
 ├── templates/
 │   └── index.html         # THE page. Bespoke design, FI+EN content inline.
-└── static/
-    └── favicon.svg        # Red square favicon
+├── static/
+│   └── favicon.svg        # Red square favicon
+└── operations/
+    └── secrets/
+        ├── AGENTS.md              # secrets + deploy runbook, token permissions
+        └── cloudflare.enc.yaml    # SOPS-encrypted Cloudflare API token
 ```
 
 The homepage is rendered from `templates/index.html`, driven by `content/_index.md`
@@ -38,6 +43,22 @@ meta description. `zola build` → `public/` (gitignored).
 zola serve      # local hot-reload at http://127.0.0.1:1111
 zola build      # production build → public/
 ```
+
+## Deployment
+
+Cloudflare Pages (project `out-of-context`, custom domain `out-of-context.dev`),
+same pattern as frondeo.ai:
+
+```bash
+./deploy.sh     # zola build → wrangler pages deploy
+```
+
+The Cloudflare API token is read from `CLOUDFLARE_API_TOKEN` or the SOPS-encrypted
+`operations/secrets/cloudflare.enc.yaml`. **Full setup — putting the real token
+in place and the exact token permissions — is in
+[`operations/secrets/AGENTS.md`](operations/secrets/AGENTS.md).** First deploy
+serves at `out-of-context.pages.dev`; attaching the custom domain is a one-time
+step documented there.
 
 ## Design
 

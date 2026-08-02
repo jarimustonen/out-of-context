@@ -17,6 +17,15 @@ zola build      # production build → public/
 
 Edit the page in `templates/index.html`; site-wide metadata in `config.toml`.
 
+## Deploy
+
+```bash
+./deploy.sh     # zola build → Cloudflare Pages (out-of-context.dev)
+```
+
+Put the real Cloudflare token in place once (`sops operations/secrets/cloudflare.enc.yaml`),
+then `./deploy.sh`. Token permissions + custom-domain setup: `operations/secrets/AGENTS.md`.
+
 ## Status
 
 Private, pre-launch. Goes public — and the `noindex` meta comes off — when the
