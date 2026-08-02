@@ -1,0 +1,29 @@
+---
+created: 2026-08-02
+updated: 2026-08-02
+type: chore
+status: open
+priority: high
+labels: [pre-launch]
+---
+
+# Pre-launch checklist: swap placeholders before public launch
+
+## Description
+
+Things that must be done/removed before the registration page is truly public. The page currently ships with pre-launch placeholders and a `noindex, nofollow` meta. Track the removals here so nothing ships half-live.
+
+## Acceptance Criteria
+
+- [ ] Remove `noindex, nofollow` meta from `templates/index.html` (make the page indexable) — kept on purpose until the event is public.
+- [ ] Remove or finalize the hardcoded seat counter `11 / 30 paikkaa varattu` in the hero (both FI + EN blocks in `templates/index.html`). It is static and does not reflect real Lu.ma signups. Decide: drop it, or set a real number. **If the number changes, also rerun `tools/og-image/generate.py` and commit `static/og-image.png`** (the count is baked into the OG image too).
+- [ ] Swap the real Lu.ma event URL for `https://lu.ma/out-of-context` (appears ~4× in `templates/index.html`).
+- [ ] Confirm `hei@out-of-context.dev` receives mail (Cloudflare Email Routing → forward to `jari@itsellesi.fi`; destination address must be verified via the link Cloudflare emails).
+- [ ] Add `www → apex` 301 redirect at Cloudflare (needs a Redirect Rule / token scope beyond the deploy token). Canonical `<link rel="canonical">` already points at the apex.
+- [ ] Confirm final venue and replace "Helsingin keskustan alue / Central Helsinki" with the exact place once known (page currently says it's confirmed a week before).
+- [ ] Make the GitHub repo public (footer links to `github.com/jarimustonen/out-of-context`; private until launch) — update link if it moves to a community org.
+- [ ] Test social link previews (LinkedIn Post Inspector / paste into Slack/WhatsApp) once the OG image is deployed live.
+
+## Notes
+
+Done already (2026-08-02): OG/Twitter meta + `static/og-image.png`, `apple-touch-icon.png`, canonical link, richer `<title>`, footer source link fixed, venue narrowed to central Helsinki.

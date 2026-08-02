@@ -3,10 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ config.title }}</title>
+<title>Out of Context — Demoja, ei kalvoja · Helsinki 16.9.2026</title>
 <meta name="description" content="{{ config.description }}">
 <meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="{{ config.base_url }}/">
+
+<!-- Open Graph / social link previews -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Out of Context">
+<meta property="og:locale" content="fi_FI">
+<meta property="og:url" content="{{ config.base_url }}/">
+<meta property="og:title" content="Out of Context — Demoja, ei kalvoja">
+<meta property="og:description" content="{{ config.description }}">
+<meta property="og:image" content="{{ config.base_url }}/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Out of Context — ilta sinulle joka luot AI:lla. Helsinki, ke 16.9.2026.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Out of Context — Demoja, ei kalvoja">
+<meta name="twitter:description" content="{{ config.description }}">
+<meta name="twitter:image" content="{{ config.base_url }}/og-image.png">
+
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap">
@@ -365,9 +384,9 @@ a:hover { color: var(--color-accent); }
       </div>
       <div style="border:2px solid var(--color-divider); padding:24px; display:flex; flex-direction:column; gap:14px; align-items:flex-start">
         <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase">Lu.ma</div>
-        <div style="font-size:16px">Out of Context #1 · ke 16.9.2026 klo 18:00 · Helsinki</div>
+        <div style="font-size:16px">Out of Context #1 · ke 16.9.2026 klo 18:00 · Helsingin keskusta</div>
         <a href="https://lu.ma/out-of-context" class="btn btn-primary" style="justify-content:flex-start; font-size:16px; padding:16px 20px; width:100%; box-sizing:border-box">Ilmoittaudu Lu.massa</a>
-        <div class="text-muted" style="font-size:13px">Tarkka tila vahvistetaan viikkoa ennen. Kysyttävää? <a href="mailto:hei@out-of-context.dev?subject=Haluan%20demota">hei@out-of-context.dev</a></div>
+        <div class="text-muted" style="font-size:13px">Helsingin keskustan alueella; tarkka tila vahvistetaan viikkoa ennen. Kysyttävää? <a href="mailto:hei@out-of-context.dev?subject=Haluan%20demota">hei@out-of-context.dev</a></div>
       </div>
     </section>
   </div>
@@ -447,16 +466,16 @@ a:hover { color: var(--color-accent); }
       </div>
       <div style="border:2px solid var(--color-divider); padding:24px; display:flex; flex-direction:column; gap:14px; align-items:flex-start">
         <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase">Lu.ma</div>
-        <div style="font-size:16px">Out of Context #1 · Wed 16 Sep 2026, 18:00 · Helsinki</div>
+        <div style="font-size:16px">Out of Context #1 · Wed 16 Sep 2026, 18:00 · Central Helsinki</div>
         <a href="https://lu.ma/out-of-context" class="btn btn-primary" style="justify-content:flex-start; font-size:16px; padding:16px 20px; width:100%; box-sizing:border-box">Register on Lu.ma</a>
-        <div class="text-muted" style="font-size:13px">Exact venue confirmed a week before. Questions? <a href="mailto:hei@out-of-context.dev?subject=Haluan%20demota">hei@out-of-context.dev</a></div>
+        <div class="text-muted" style="font-size:13px">In central Helsinki; exact venue confirmed a week before. Questions? <a href="mailto:hei@out-of-context.dev?subject=Haluan%20demota">hei@out-of-context.dev</a></div>
       </div>
     </section>
   </div>
 
   <footer style="display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; padding:18px 0 40px; border-top:2px solid var(--color-divider); font-size:13px">
     <div class="text-muted">Out of Context · Helsinki · out-of-context.dev</div>
-    <div><a href="https://github.com/out-of-context/site">Lähdekoodi / source →</a> · PR:t tervetulleita</div>
+    <div><a href="https://github.com/jarimustonen/out-of-context">Lähdekoodi / source →</a> · PR:t tervetulleita</div>
   </footer>
 
 </div>
