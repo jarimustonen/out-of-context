@@ -15,8 +15,8 @@ Things that must be done/removed before the registration page is truly public. T
 
 ## Acceptance Criteria
 
-- [ ] Remove `noindex, nofollow` meta from `templates/index.html` (make the page indexable) — kept on purpose until the event is public.
-- [ ] Remove or finalize the hardcoded seat counter `11 / 30 paikkaa varattu` in the hero (both FI + EN blocks in `templates/index.html`). It is static and does not reflect real Lu.ma signups. Decide: drop it, or set a real number. **If the number changes, also rerun `tools/og-image/generate.py` and commit `static/og-image.png`** (the count is baked into the OG image too).
+- [x] Remove `noindex, nofollow` meta from `templates/index.html` (make the page indexable) — kept on purpose until the event is public.
+- [x] Remove or finalize the hardcoded seat counter `11 / 30 paikkaa varattu` in the hero (both FI + EN blocks in `templates/index.html`). It is static and does not reflect real Lu.ma signups. Decide: drop it, or set a real number. **If the number changes, also rerun `tools/og-image/generate.py` and commit `static/og-image.png`** (the count is baked into the OG image too).
 - [x] Swap the real Lu.ma event URL for `https://lu.ma/out-of-context` (appears ~4× in `templates/index.html`).
 - [x] Confirm `hei@out-of-context.dev` receives mail (Cloudflare Email Routing → forward to `jari@itsellesi.fi`; destination address must be verified via the link Cloudflare emails).
 - [ ] Add `www → apex` 301 redirect at Cloudflare (needs a Redirect Rule / token scope beyond the deploy token). Canonical `<link rel="canonical">` already points at the apex.

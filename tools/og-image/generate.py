@@ -83,7 +83,7 @@ for ri, word in enumerate(BROWS):
                     parts.append(f'<circle cx="{xs[cc]:.1f}" cy="{ys[rr]:.1f}" r="{dr:.1f}" fill="{OFF}"/>')
 parts.append(_bar(by0 + 4 * (bsq + bgap)))
 by_bottom = by0 + 5 * (bsq + bgap)
-parts.append(f'<text x="800" y="{by_bottom + 20}" font-family="{FF}" font-size="20" fill="{OFF}">11 / 30 paikkaa</text>')
+parts.append(f'<text x="800" y="{by_bottom + 20}" font-family="{FF}" font-size="20" fill="{OFF}">30 paikkaa</text>')
 
 parts.append('</svg>')
 

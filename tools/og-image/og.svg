@@ -70,5 +70,5 @@
 <circle cx="1126.4" cy="341.6" r="3.4" fill="#f3f2f2"/>
 <circle cx="1126.4" cy="352.0" r="3.4" fill="#f3f2f2"/>
 <rect x="800" y="382" width="40" height="40" fill="#f3f2f2"/><rect x="850" y="382" width="40" height="40" fill="#f3f2f2"/><rect x="900" y="382" width="40" height="40" fill="#f3f2f2"/><rect x="950" y="382" width="40" height="40" fill="#f3f2f2"/><rect x="1000" y="382" width="40" height="40" fill="#f3f2f2"/><rect x="1050" y="382" width="40" height="40" fill="#f3f2f2"/><rect x="1100" y="382" width="40" height="40" fill="#f3f2f2"/>
-<text x="800" y="452" font-family="Archivo Black, Archivo, sans-serif" font-size="20" fill="#f3f2f2">11 / 30 paikkaa</text>
+<text x="800" y="452" font-family="Archivo Black, Archivo, sans-serif" font-size="20" fill="#f3f2f2">30 paikkaa</text>
 </svg>
