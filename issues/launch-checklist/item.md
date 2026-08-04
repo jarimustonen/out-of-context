@@ -21,7 +21,7 @@ Things that must be done/removed before the registration page is truly public. T
 - [x] Confirm `hei@out-of-context.dev` receives mail (Cloudflare Email Routing → forward to `jari@itsellesi.fi`; destination address must be verified via the link Cloudflare emails).
 - [ ] Add `www → apex` 301 redirect at Cloudflare (needs a Redirect Rule / token scope beyond the deploy token). Canonical `<link rel="canonical">` already points at the apex.
 - [ ] Confirm final venue and replace "Helsingin keskustan alue / Central Helsinki" with the exact place once known (page currently says it's confirmed a week before).
-- [ ] Make the GitHub repo public (footer links to `github.com/jarimustonen/out-of-context`; private until launch) — update link if it moves to a community org.
+- [x] Make the GitHub repo public (footer links to `github.com/jarimustonen/out-of-context`; private until launch) — update link if it moves to a community org.
 - [ ] Test social link previews (LinkedIn Post Inspector / paste into Slack/WhatsApp) once the OG image is deployed live.
 
 ## Notes
