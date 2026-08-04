@@ -3,10 +3,12 @@
 #
 # Brand: modernist red grid — accent #ec3013 on warm off-white #f3f2f2,
 # Archivo Black display type (the heavy static cut of the site's Archivo 800).
+# Left: big wordmark + "Demoja, ei kalvoja." + a large two-line date/location.
+# Right: red panel carrying the braille "context window" grid (favicon-style
+# square dots), no text.
 #
 # Output:  og.svg (source) + ../../static/og-image.png (shipped asset).
-# Rerun this whenever the date / seat count / tagline on the image changes,
-# then commit static/og-image.png.
+# Rerun whenever the date / location / tagline changes, then commit the PNG.
 #
 # Requires: rsvg-convert (librsvg) and the Archivo Black TTF discoverable by
 # fontconfig. On a machine without it:
@@ -42,24 +44,27 @@ parts.append(f'<rect x="{PANEL_X}" y="0" width="{W-PANEL_X}" height="{H}" fill="
 
 # ---- left text column ----
 LX = 72
-parts.append(f'<text x="{LX}" y="86" font-family="{FF}" font-size="26" letter-spacing="4" fill="{INK}">OUT OF CONTEXT</text>')
-parts.append(f'<text x="{LX}" y="250" font-family="{FF}" font-size="21" letter-spacing="1.5" fill="{RED}">HELSINKI &#183; KE 16.9.2026 &#183; 18:00 &#183; ILMAINEN</text>')
-parts.append(f'<text x="{LX-4}" y="360" font-family="{FF}" font-size="104" letter-spacing="-3" fill="{INK}">Demoja,</text>')
-parts.append(f'<text x="{LX-4}" y="464" font-family="{FF}" font-size="104" letter-spacing="-3" fill="{INK}">ei kalvoja.</text>')
-parts.append(f'<text x="{LX}" y="566" font-family="{FF}" font-size="22" letter-spacing="0.5" fill="{INK}" opacity="0.55">out-of-context.dev</text>')
+# big wordmark
+parts.append(f'<text x="{LX}" y="132" font-family="{FF}" font-size="56" letter-spacing="1" fill="{INK}">OUT OF CONTEXT</text>')
+# headline
+parts.append(f'<text x="{LX-4}" y="322" font-family="{FF}" font-size="100" letter-spacing="-3" fill="{INK}">Demoja,</text>')
+parts.append(f'<text x="{LX-4}" y="422" font-family="{FF}" font-size="100" letter-spacing="-3" fill="{INK}">ei kalvoja.</text>')
+# large two-line date / location
+parts.append(f'<text x="{LX}" y="512" font-family="{FF}" font-size="34" letter-spacing="0.5" fill="{RED}">KE 16.9.2026 &#183; KLO 18:00</text>')
+parts.append(f'<text x="{LX}" y="558" font-family="{FF}" font-size="30" letter-spacing="0.5" fill="{INK}" opacity="0.72">HELSINGIN KESKUSTA &#183; ILMAINEN</text>')
 
-# ---- right panel: context-window grid spelling "OUT OF CONTEXT" in braille ----
-# Each square is one braille letter; red frame rows top and bottom. Off-white on
-# the red panel — the inverse of the site's red-on-off-white hero grid.
-parts.append(f'<text x="800" y="150" font-family="{FF}" font-size="17" letter-spacing="2.5" fill="{OFF}">CONTEXT WINDOW</text>')
+# ---- right panel: braille "OUT OF CONTEXT" grid, favicon-style square dots ----
 DOTS = {1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (1, 0), 5: (1, 1), 6: (1, 2)}
 LET = {'O': {1, 3, 5}, 'U': {1, 3, 6}, 'T': {2, 3, 4, 5}, 'F': {1, 2, 4},
        'C': {1, 4}, 'N': {1, 3, 4, 5}, 'E': {1, 5}, 'X': {1, 3, 4, 6}}
 BROWS = ["OUT", "OF", "CONTEXT"]
-bcols = 7
-bsq, bgap = 40, 10
-bx0, by0 = 800, 182
-dr = bsq * 0.085
+bcols, brows = 7, 5
+bsq, bgap = 44, 11
+gw = bcols * bsq + (bcols - 1) * bgap
+gh = brows * bsq + (brows - 1) * bgap
+bx0 = PANEL_X + (W - PANEL_X - gw) // 2      # centered in the red panel
+by0 = (H - gh) // 2                          # centered vertically
+d = bsq * 0.22                               # square dot side (favicon-chunky)
 
 
 def _bar(y):
@@ -78,12 +83,10 @@ for ri, word in enumerate(BROWS):
             on = LET[word[c]]
             xs = [x + bsq * 0.34, x + bsq * 0.66]
             ys = [y + bsq * 0.24, y + bsq * 0.5, y + bsq * 0.76]
-            for d, (cc, rr) in DOTS.items():
-                if d in on:
-                    parts.append(f'<circle cx="{xs[cc]:.1f}" cy="{ys[rr]:.1f}" r="{dr:.1f}" fill="{OFF}"/>')
+            for dn, (cc, rr) in DOTS.items():
+                if dn in on:
+                    parts.append(f'<rect x="{xs[cc] - d / 2:.1f}" y="{ys[rr] - d / 2:.1f}" width="{d:.1f}" height="{d:.1f}" fill="{OFF}"/>')
 parts.append(_bar(by0 + 4 * (bsq + bgap)))
-by_bottom = by0 + 5 * (bsq + bgap)
-parts.append(f'<text x="800" y="{by_bottom + 20}" font-family="{FF}" font-size="20" fill="{OFF}">30 paikkaa</text>')
 
 parts.append('</svg>')
 
