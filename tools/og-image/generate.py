@@ -48,24 +48,42 @@ parts.append(f'<text x="{LX-4}" y="360" font-family="{FF}" font-size="104" lette
 parts.append(f'<text x="{LX-4}" y="464" font-family="{FF}" font-size="104" letter-spacing="-3" fill="{INK}">ei kalvoja.</text>')
 parts.append(f'<text x="{LX}" y="566" font-family="{FF}" font-size="22" letter-spacing="0.5" fill="{INK}" opacity="0.55">out-of-context.dev</text>')
 
-# ---- right panel: context-window seat grid ----
+# ---- right panel: context-window grid spelling "OUT OF CONTEXT" in braille ----
+# Each square is one braille letter; red frame rows top and bottom. Off-white on
+# the red panel — the inverse of the site's red-on-off-white hero grid.
 parts.append(f'<text x="800" y="150" font-family="{FF}" font-size="17" letter-spacing="2.5" fill="{OFF}">CONTEXT WINDOW</text>')
-cols, rows = 6, 5
-sq, gap = 44, 12
-gx0, gy0 = 800, 178
-filled = 11
-i = 0
-for r in range(rows):
-    for c in range(cols):
-        x = gx0 + c * (sq + gap)
-        y = gy0 + r * (sq + gap)
-        if i < filled:
-            parts.append(f'<rect x="{x}" y="{y}" width="{sq}" height="{sq}" fill="{OFF}"/>')
-        else:
-            parts.append(f'<rect x="{x}" y="{y}" width="{sq}" height="{sq}" fill="none" stroke="{OFF}" stroke-opacity="0.5" stroke-width="2"/>')
-        i += 1
-gy_bottom = gy0 + rows * (sq + gap)
-parts.append(f'<text x="800" y="{gy_bottom + 22}" font-family="{FF}" font-size="20" fill="{OFF}">11 / 30 paikkaa</text>')
+DOTS = {1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (1, 0), 5: (1, 1), 6: (1, 2)}
+LET = {'O': {1, 3, 5}, 'U': {1, 3, 6}, 'T': {2, 3, 4, 5}, 'F': {1, 2, 4},
+       'C': {1, 4}, 'N': {1, 3, 4, 5}, 'E': {1, 5}, 'X': {1, 3, 4, 6}}
+BROWS = ["OUT", "OF", "CONTEXT"]
+bcols = 7
+bsq, bgap = 40, 10
+bx0, by0 = 800, 182
+dr = bsq * 0.085
+
+
+def _bar(y):
+    return "".join(
+        f'<rect x="{bx0 + c * (bsq + bgap)}" y="{y}" width="{bsq}" height="{bsq}" fill="{OFF}"/>'
+        for c in range(bcols))
+
+
+parts.append(_bar(by0))
+for ri, word in enumerate(BROWS):
+    y = by0 + (ri + 1) * (bsq + bgap)
+    for c in range(bcols):
+        x = bx0 + c * (bsq + bgap)
+        parts.append(f'<rect x="{x}" y="{y}" width="{bsq}" height="{bsq}" fill="none" stroke="{OFF}" stroke-opacity="0.55" stroke-width="2"/>')
+        if c < len(word):
+            on = LET[word[c]]
+            xs = [x + bsq * 0.34, x + bsq * 0.66]
+            ys = [y + bsq * 0.24, y + bsq * 0.5, y + bsq * 0.76]
+            for d, (cc, rr) in DOTS.items():
+                if d in on:
+                    parts.append(f'<circle cx="{xs[cc]:.1f}" cy="{ys[rr]:.1f}" r="{dr:.1f}" fill="{OFF}"/>')
+parts.append(_bar(by0 + 4 * (bsq + bgap)))
+by_bottom = by0 + 5 * (bsq + bgap)
+parts.append(f'<text x="800" y="{by_bottom + 20}" font-family="{FF}" font-size="20" fill="{OFF}">11 / 30 paikkaa</text>')
 
 parts.append('</svg>')
 
