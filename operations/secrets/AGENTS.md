@@ -45,7 +45,9 @@ wrangler, so scope the token to exactly what that needs:
 | **Account** | Cloudflare Pages | **Edit** | Create the Pages project and push deployments (the core permission — wrangler needs it) |
 | **Account** | Account Settings | **Read** | Lets wrangler enumerate/confirm the account when the account id isn't pinned |
 | **Zone** | Zone | **Read** | `deploy.sh` resolves the account id from the `out-of-context.dev` zone; also needed to attach the custom domain |
-| **Zone** | DNS | **Edit** | Only needed when attaching the `out-of-context.dev` custom domain to the Pages project (records + verification) |
+| **Zone** | DNS | **Edit** | Attach the custom domain (records + verification); create the email-routing MX/TXT |
+| **Zone** | Email Routing Rules | **Edit** | Create the `hei@` forward rule via API (added 2026-08-04) |
+| **Zone** | Dynamic Redirect | **Edit** | Create the `www`→apex 301 Single Redirect via API (added 2026-08-04) |
 
 **Account Resources**: include your Cloudflare account (the same one that hosts
 frondeo.ai).
@@ -60,14 +62,29 @@ Edit** only. The Zone rows matter once you point the real domain at it.
 > one only needs Pages + the out-of-context.dev zone, not the full frondeo.ai /
 > frondeo.cloud DNS surface.
 
-## Attaching the custom domain (one-time, later)
+## Custom domain + email + redirect — DONE (2026-08-04)
 
-1. Add `out-of-context.dev` as a zone in the Cloudflare account (register or
-   move nameservers).
-2. Cloudflare dashboard → Workers & Pages → `out-of-context` → Custom domains →
-   add `out-of-context.dev`. Cloudflare creates the CNAME + validates.
-3. Re-run `./deploy.sh`; the account-id-from-zone lookup now succeeds
-   automatically.
+All live on the `out-of-context.dev` Cloudflare zone. Recorded here so the setup
+is reproducible / debuggable, not because it needs redoing.
+
+- **Custom domain**: `out-of-context.dev` (apex) and `www` are attached to the
+  Pages project; both are `CNAME → out-of-context.pages.dev` (proxied). Apex uses
+  CNAME flattening. TLS auto-issued. Attaching via API needed the domains POSTed
+  to the project **and** the CNAME records created by hand (Cloudflare did not
+  auto-create them).
+- **`www` → apex**: a Single Redirect (an `http_request_dynamic_redirect`
+  ruleset) 301s `www.out-of-context.dev/*` → `out-of-context.dev/*`, path + query
+  preserved. Created via API (needs Dynamic Redirect: Edit). Rulesets take a
+  minute to propagate across edges.
+- **Email routing**: `hei@out-of-context.dev` → `jari@itsellesi.fi` (only `hei@`;
+  catch-all is **off**). The forward *rule* is API-creatable (Email Routing
+  Rules: Edit). But **enabling routing** (creates the MX/SPF/DKIM records) and
+  **adding + verifying the destination address** are account-level dashboard
+  steps the deploy token can't do — the destination needs a click on Cloudflare's
+  verification email. **Gotcha**: Cloudflare Email Routing has its own spam
+  filter (Email Routing → Settings) that can silently hold inbound mail — a Lu.ma
+  sign-in code got stuck there once; it was neither in the M365 inbox, junk, nor
+  quarantine because Cloudflare held it upstream.
 
 ## SOPS / age model
 
