@@ -30,7 +30,7 @@ p.append(f'<text x="{LX}" y="158" font-family="{FF}" font-size="44" letter-spaci
 p.append(f'<text x="{LX-4}" y="342" font-family="{FF}" font-size="116" letter-spacing="-3" fill="{INK}">Demoja,</text>')
 p.append(f'<text x="{LX-4}" y="458" font-family="{FF}" font-size="116" letter-spacing="-3" fill="{INK}">ei kalvoja.</text>')
 p.append(f'<text x="{LX}" y="548" font-family="{FF}" font-size="38" letter-spacing="0.5" fill="{RED}">KE 16.9.2026 &#183; KLO 18:00</text>')
-p.append(f'<text x="{LX}" y="598" font-family="{FF}" font-size="32" letter-spacing="0.5" fill="{INK}" opacity="0.72">HELSINGIN KESKUSTA &#183; ILMAINEN</text>')
+p.append(f'<text x="{LX}" y="598" font-family="{FF}" font-size="32" letter-spacing="0.5" fill="{INK}" opacity="0.72">VILHONKATU 4 B 18 &#183; ILMAINEN</text>')
 
 # braille as big red favicon tiles, centered in the lower half
 cols, rows = 7, 5
