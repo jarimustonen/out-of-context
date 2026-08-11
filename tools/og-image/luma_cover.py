@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # Square 1080x1080 Lu.ma event cover, matching the OG image: off-white field,
 # dark type, and the braille "context window" as big red favicon TILES with
-# off-white square dots (no orange background panel).
+# off-white square dots. The grid spans the full content width (margin to
+# margin); the text sits compactly above it.
 #
 # Output: luma-cover.svg + luma-cover.png (this dir). Not shipped by the site —
 # upload luma-cover.png as the Lu.ma event cover. Needs rsvg-convert + Archivo
@@ -17,6 +18,7 @@ PNG_PATH = os.path.join(HERE, "luma-cover.png")
 BG = "#f3f2f2"; INK = "#201e1d"; RED = "#ec3013"; OFF = "#f3f2f2"
 FF = "Archivo Black, Archivo, sans-serif"
 W = H = 1080
+LX = 96                       # content margin (shared by text + grid)
 DOTS = {1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (1, 0), 5: (1, 1), 6: (1, 2)}
 LET = {'O': {1, 3, 5}, 'U': {1, 3, 6}, 'T': {2, 3, 4, 5}, 'F': {1, 2, 4},
        'C': {1, 4}, 'N': {1, 3, 4, 5}, 'E': {1, 5}, 'X': {1, 3, 4, 6}}
@@ -25,20 +27,19 @@ BROWS = ["OUT", "OF", "CONTEXT"]
 p = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">']
 p.append(f'<rect width="{W}" height="{H}" fill="{BG}"/>')
 p.append(f'<rect x="1" y="1" width="{W-2}" height="{H-2}" fill="none" stroke="{INK}" stroke-width="2"/>')
-LX = 96
-p.append(f'<text x="{LX}" y="158" font-family="{FF}" font-size="44" letter-spacing="2" fill="{INK}">OUT OF CONTEXT</text>')
-p.append(f'<text x="{LX-4}" y="342" font-family="{FF}" font-size="116" letter-spacing="-3" fill="{INK}">Demoja,</text>')
-p.append(f'<text x="{LX-4}" y="458" font-family="{FF}" font-size="116" letter-spacing="-3" fill="{INK}">ei kalvoja.</text>')
-p.append(f'<text x="{LX}" y="548" font-family="{FF}" font-size="38" letter-spacing="0.5" fill="{RED}">KE 16.9.2026 &#183; KLO 18:00</text>')
-p.append(f'<text x="{LX}" y="598" font-family="{FF}" font-size="32" letter-spacing="0.5" fill="{INK}" opacity="0.72">VILHONKATU 4 B 18 &#183; ILMAINEN</text>')
+p.append(f'<text x="{LX}" y="112" font-family="{FF}" font-size="42" letter-spacing="2" fill="{INK}">OUT OF CONTEXT</text>')
+p.append(f'<text x="{LX-4}" y="208" font-family="{FF}" font-size="84" letter-spacing="-2" fill="{INK}">Demoja,</text>')
+p.append(f'<text x="{LX-4}" y="294" font-family="{FF}" font-size="84" letter-spacing="-2" fill="{INK}">ei kalvoja.</text>')
+p.append(f'<text x="{LX}" y="356" font-family="{FF}" font-size="32" letter-spacing="0.5" fill="{RED}">KE 16.9.2026 &#183; KLO 18:00</text>')
+p.append(f'<text x="{LX}" y="396" font-family="{FF}" font-size="28" letter-spacing="0.5" fill="{INK}" opacity="0.72">VILHONKATU 4 B 18 &#183; ILMAINEN</text>')
 
-# braille as big red favicon tiles, centered in the lower half
+# braille as big red favicon tiles, full content width
 cols, rows = 7, 5
-sq, gap = 58, 8
+gap = 8
+sq = (W - 2 * LX - (cols - 1) * gap) // cols          # fill margin-to-margin
 gw = cols * sq + (cols - 1) * gap
-gh = rows * sq + (rows - 1) * gap
-gx0 = LX                     # left edge aligned to the text margin
-gy0 = (H - LX) - gh          # bottom edge aligned to the bottom margin
+gx0 = LX
+gy0 = 418
 d = sq * 0.22
 xs = [sq * 0.34, sq * 0.66]
 ys = [sq * 0.24, sq * 0.5, sq * 0.76]
