@@ -3,7 +3,7 @@
 
 base_url = "https://out-of-context.dev"
 title = "Out of Context"
-description = "Ilta sinulle joka luot AI:lla. Demoja, ei kalvoja."
+description = "Ilta sinulle joka luot AI:lla. Demoilta Helsingissä."
 default_language = "fi"
 
 compile_sass = false
