@@ -42,8 +42,7 @@ parts.append(f'<rect x="1" y="1" width="{W-2}" height="{H-2}" fill="none" stroke
 # ---- left text column ----
 LX = 72
 parts.append(f'<text x="{LX}" y="132" font-family="{FF}" font-size="56" letter-spacing="1" fill="{INK}">OUT OF CONTEXT</text>')
-parts.append(f'<text x="{LX-4}" y="322" font-family="{FF}" font-size="100" letter-spacing="-3" fill="{INK}">Demoja,</text>')
-parts.append(f'<text x="{LX-4}" y="422" font-family="{FF}" font-size="100" letter-spacing="-3" fill="{INK}">ei kalvoja.</text>')
+parts.append(f'<text x="{LX-4}" y="378" font-family="{FF}" font-size="112" letter-spacing="-3" fill="{INK}">Demoilta #1</text>')
 parts.append(f'<text x="{LX}" y="512" font-family="{FF}" font-size="34" letter-spacing="0.5" fill="{RED}">KE 16.9.2026 &#183; KLO 18:00</text>')
 parts.append(f'<text x="{LX}" y="558" font-family="{FF}" font-size="30" letter-spacing="0.5" fill="{INK}" opacity="0.72">VILHONKATU 4 B 18 &#183; ILMAINEN</text>')
 
