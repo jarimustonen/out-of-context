@@ -2,9 +2,10 @@
 created: 2026-08-02
 updated: 2026-08-11
 type: chore
-status: open
+status: done
 priority: high
 labels: [pre-launch]
+closed: 2026-08-11
 ---
 
 # Pre-launch checklist: swap placeholders before public launch
