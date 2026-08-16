@@ -115,10 +115,8 @@ retired now that this standalone repo exists.
 
 ## CLI Design Principles
 
-This project follows the AI-first CLI conventions in
-[`AGENTS-AI-FIRST-CLI.md`](AGENTS-AI-FIRST-CLI.md) — shared canon copied from
-`homebase`; treat it as read-only reference, not a project-local doc to edit.
-(This repo currently ships no CLI, but the conventions apply if one is added.)
+Use the `/ai-first-cli-canon` skill shipped by `project-canon` as the maintained AI-first CLI canon. It is the binding reference for CLI surface work: strict input validation, `--json` output, JSONL logs, no interactive prompts, informative errors and composable commands. Do not keep or edit a repo-local `AGENTS-AI-FIRST-CLI.md` copy; update the canon in `~/Sources/project-canon` and reinstall the skill from the released tool.
+
 
 ## Documentation Pattern
 
