@@ -29,7 +29,7 @@ p.append(f'<rect width="{W}" height="{H}" fill="{BG}"/>')
 p.append(f'<rect x="1" y="1" width="{W-2}" height="{H-2}" fill="none" stroke="{INK}" stroke-width="2"/>')
 p.append(f'<text x="{LX}" y="112" font-family="{FF}" font-size="42" letter-spacing="2" fill="{INK}">OUT OF CONTEXT</text>')
 p.append(f'<text x="{LX-4}" y="248" font-family="{FF}" font-size="104" letter-spacing="-2" fill="{INK}">Demoilta #1</text>')
-p.append(f'<text x="{LX}" y="324" font-family="{FF}" font-size="32" letter-spacing="0.5" fill="{RED}">KE 16.9.2026 &#183; KLO 18:00</text>')
+p.append(f'<text x="{LX}" y="324" font-family="{FF}" font-size="32" letter-spacing="0.5" fill="{RED}">KE 16.9.2026 &#183; KLO 17:00</text>')
 p.append(f'<text x="{LX}" y="366" font-family="{FF}" font-size="28" letter-spacing="0.5" fill="{INK}" opacity="0.72">VILHONKATU 4 B 18 &#183; ILMAINEN</text>')
 
 # braille as big red favicon tiles, full content width
