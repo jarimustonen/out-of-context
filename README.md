@@ -28,8 +28,8 @@ then `./deploy.sh`. Token permissions + custom-domain setup: `operations/secrets
 
 ## Status
 
-Private, pre-launch. Goes public — and the `noindex` meta comes off — when the
-first event is announced. See `AGENTS.md` for the placeholder checklist.
+Public at [out-of-context.dev](https://out-of-context.dev). The current event is
+Demoilta #2 on 14 October 2026.
 
 ## License
 
