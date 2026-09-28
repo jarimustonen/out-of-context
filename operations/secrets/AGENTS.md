@@ -1,115 +1,111 @@
 # Secrets & deployment
 
-SOPS with age encryption (config in `/.sops.yaml`), plus the site deploy to
-Cloudflare Pages (`/deploy.sh`).
+This directory holds the one real secret the site has: the Cloudflare API token
+that `deploy.sh` uses to publish to Cloudflare Pages. It is SOPS-encrypted to
+age recipients listed in `/.sops.yaml`. The repository is public, so the
+encryption is the only thing between the token and the world; the encrypted
+file itself is fine to commit, and its `#` comment lines are encrypted too.
 
-## Deploy in one line
+## Deploying
 
-```bash
-./deploy.sh
-```
+`./deploy.sh` builds the site and pushes `public/` to the Pages project
+`out-of-context`. Its header comment documents the required tools and how it
+finds the token (environment variable first, then this directory's encrypted
+file). The script refuses to run with the placeholder token, so a failed token
+check is a decryption problem, not a placeholder one. The real token has been
+in place since launch on 2026-08-04.
 
-It builds the Zola site (`public/`) and runs `wrangler pages deploy` to the
-Cloudflare Pages project `out-of-context`. The token comes from
-`CLOUDFLARE_API_TOKEN` (env) or, if unset, from the SOPS-encrypted
-`operations/secrets/cloudflare.enc.yaml` (`api_token` key). The first deploy
-creates the project and serves it at `https://out-of-context.pages.dev`.
+Deploying is routine and cheap. Pages keeps every deployment and the dashboard
+can roll back to any of them, so a bad deploy costs a minute, not the site. Do
+it whenever the content is ready; nobody needs to be asked.
 
-## Put the real Cloudflare token in place
-
-The encrypted secret already exists with a placeholder. Drop in the real token:
-
-```bash
-sops operations/secrets/cloudflare.enc.yaml
-# replace:  api_token: REPLACE_WITH_REAL_CLOUDFLARE_API_TOKEN
-# with:     api_token: <real token>
-```
-
-Then `./deploy.sh`. Nothing else to wire up. (`sops` decrypts with your age key
-at `~/.config/sops/age/keys.txt` — the same key already used for the frondeo repo.)
-
-Verify without printing the value:
+To check that decryption works on this machine without showing the value:
 
 ```bash
 sops -d operations/secrets/cloudflare.enc.yaml >/dev/null && echo OK
 ```
 
-## Cloudflare API token — required permissions
+Decryption uses the age key at `~/.config/sops/age/keys.txt` (or
+`SOPS_AGE_KEY_FILE`). Jari's two machines hold it; it is the same key used for
+the frondeo repo. The account id can optionally be pinned as `account_id` inside
+the encrypted file to skip the zone lookup; it is not pinned today and the
+lookup works, so this only matters if the zone lookup ever fails.
 
-Create the token at **Cloudflare dashboard → My Profile → API Tokens → Create
-Token → Create Custom Token**. This site is deployed with Cloudflare Pages via
-wrangler, so scope the token to exactly what that needs:
+## What the token can do, and why it matters
+
+The token is a custom token created in the Cloudflare dashboard (My Profile →
+API Tokens → Create Custom Token), scoped to the account that also hosts
+frondeo.ai and to the `out-of-context.dev` zone. These are the grants and what
+each one is for, so that a replacement token can be cut with the same shape:
 
 | Scope | Resource | Permission | Why |
 |-------|----------|------------|-----|
-| **Account** | Cloudflare Pages | **Edit** | Create the Pages project and push deployments (the core permission — wrangler needs it) |
-| **Account** | Account Settings | **Read** | Lets wrangler enumerate/confirm the account when the account id isn't pinned |
-| **Zone** | Zone | **Read** | `deploy.sh` resolves the account id from the `out-of-context.dev` zone; also needed to attach the custom domain |
-| **Zone** | DNS | **Edit** | Attach the custom domain (records + verification); create the email-routing MX/TXT |
-| **Zone** | Email Routing Rules | **Edit** | Create the `hei@` forward rule via API (added 2026-08-04) |
-| **Zone** | Dynamic Redirect | **Edit** | Create the `www`→apex 301 Single Redirect via API (added 2026-08-04) |
+| Account | Cloudflare Pages | Edit | Create the project and push deployments. The only grant needed to deploy to `*.pages.dev`. |
+| Account | Account Settings | Read | Lets wrangler confirm the account when the id is not pinned. |
+| Zone | Zone | Read | `deploy.sh` resolves the account id from the zone; also needed to attach the custom domain. |
+| Zone | DNS | Edit | Attach the custom domain and create the email-routing MX/TXT records. |
+| Zone | Email Routing Rules | Edit | Create the `hei@` forward rule via API. |
+| Zone | Dynamic Redirect | Edit | Create the `www` → apex redirect via API. |
 
-**Account Resources**: include your Cloudflare account (the same one that hosts
-frondeo.ai).
-**Zone Resources**: `out-of-context.dev` once the domain is on Cloudflare;
-until then just leave the Account-level Pages:Edit — that alone is enough to
-deploy to `*.pages.dev`.
+The zone grants mean a leaked token lets someone rewrite this domain's DNS and
+mail routing, not just push a deployment. That is why it is a separate token
+from frondeo's, whose zone grants cover frondeo.ai and frondeo.cloud: a leak
+here should not reach there. If the token is ever exposed, whether in a
+transcript, a commit, or an issue, the fix is to revoke and re-create it in the
+dashboard, which only Jari can do; removing an age recipient does not help,
+because the public git history still holds every earlier encrypted revision.
 
-Minimal to get a first `*.pages.dev` deploy: **Account → Cloudflare Pages →
-Edit** only. The Zone rows matter once you point the real domain at it.
+Things the token deliberately cannot do are account-level dashboard steps:
+enabling Email Routing on the zone, and adding or verifying the destination
+address (the destination has to click Cloudflare's verification email).
 
-> Keep this token distinct from the frondeo `cloudflare.enc.yaml` token. This
-> one only needs Pages + the out-of-context.dev zone, not the full frondeo.ai /
-> frondeo.cloud DNS surface.
+## How the zone is set up
 
-## Custom domain + email + redirect — DONE (2026-08-04)
+All of this has been live since 2026-08-04 and is recorded for debugging and
+rebuilding, not because it needs doing again.
 
-All live on the `out-of-context.dev` Cloudflare zone. Recorded here so the setup
-is reproducible / debuggable, not because it needs redoing.
+**Custom domain.** `out-of-context.dev` and `www` are attached to the Pages
+project. Both are proxied `CNAME → out-of-context.pages.dev`; the apex uses
+CNAME flattening; TLS was issued automatically. When this was done via the API,
+adding the domains to the project did not create the DNS records, so the CNAMEs
+had to be created separately. Expect the same if a domain is ever re-attached.
 
-- **Custom domain**: `out-of-context.dev` (apex) and `www` are attached to the
-  Pages project; both are `CNAME → out-of-context.pages.dev` (proxied). Apex uses
-  CNAME flattening. TLS auto-issued. Attaching via API needed the domains POSTed
-  to the project **and** the CNAME records created by hand (Cloudflare did not
-  auto-create them).
-- **`www` → apex**: a Single Redirect (an `http_request_dynamic_redirect`
-  ruleset) 301s `www.out-of-context.dev/*` → `out-of-context.dev/*`, path + query
-  preserved. Created via API (needs Dynamic Redirect: Edit). Rulesets take a
-  minute to propagate across edges.
-- **Email routing**: `hei@out-of-context.dev` → `jari@itsellesi.fi` (only `hei@`;
-  catch-all is **off**). The forward *rule* is API-creatable (Email Routing
-  Rules: Edit). But **enabling routing** (creates the MX/SPF/DKIM records) and
-  **adding + verifying the destination address** are account-level dashboard
-  steps the deploy token can't do — the destination needs a click on Cloudflare's
-  verification email. **Gotcha**: Cloudflare Email Routing has its own spam
-  filter (Email Routing → Settings) that can silently hold inbound mail — a Lu.ma
-  sign-in code got stuck there once; it was neither in the M365 inbox, junk, nor
-  quarantine because Cloudflare held it upstream.
+**`www` → apex.** A Single Redirect (an `http_request_dynamic_redirect` ruleset)
+returns 301 from `www.out-of-context.dev/*` to `out-of-context.dev/*` with path
+and query preserved. Rulesets take about a minute to reach all edges, so a
+just-created redirect that does not work yet is probably not broken.
 
-## SOPS / age model
+**Email.** `hei@out-of-context.dev` forwards to `jari@itsellesi.fi`. Only that
+address; catch-all is off. Cloudflare Email Routing has its own spam filter
+(Email Routing → Settings) that can hold inbound mail silently. A Lu.ma sign-in
+code once vanished this way: it was in neither the M365 inbox, junk, nor
+quarantine, because Cloudflare held it upstream. If mail to `hei@` seems to be
+missing, look there before anywhere downstream.
 
-Single admin tier: every `*.enc.{yaml,json,env}` is encrypted to Jari's two age
-keys (see `/.sops.yaml`). To add a maintainer as the project goes
-community-owned:
+Changes to DNS, the redirect, or email routing take effect on the live domain
+immediately and affect the site and Jari's mail. They are rarely needed; when
+they are, say what you are changing and why, since a wrong CNAME takes the site
+down for everyone until someone notices.
 
-1. They generate an age keypair **to a file** (never bare `age-keygen`, which
-   prints the private key to stdout):
-   ```bash
-   mkdir -p ~/.config/sops/age && age-keygen -o ~/.config/sops/age/keys.txt
-   age-keygen -y ~/.config/sops/age/keys.txt   # prints only the public age1... key
-   ```
-2. They append their public `age1...` key to the `age:` list in `/.sops.yaml`
-   and commit + push (never the private key).
-3. An existing key holder re-encrypts: `sops updatekeys operations/secrets/cloudflare.enc.yaml`
-   and commits the result. (`updatekeys` only rewrites recipients once run — it
-   is not a live ACL.)
+## Who can decrypt
 
-**Never** let a decrypted secret reach the console — always pipe to a subshell
-or `>/dev/null`. Never commit a private key (`AGE-SECRET-KEY-...`).
+`/.sops.yaml` lists the recipients (currently Jari's two machines) and contains
+the steps for adding a maintainer as the project becomes community-owned; it is
+the source for that procedure and is not repeated here. Two things behind those
+steps are worth understanding rather than just following:
 
-## Reference
+- Bare `age-keygen` prints the private key to stdout. In an agent session that
+  means the key lands in the transcript, and transcripts and terminal logs are
+  durable and often synced. Generating to a file avoids that.
+- `sops updatekeys` re-encrypts one file to the current recipient list, once,
+  when run. It is not a live ACL. Adding a recipient to `.sops.yaml` grants
+  nothing until a current key holder runs it and commits the result, and
+  removing one revokes nothing from history (see above; rotate the secret
+  instead).
 
-- **SOPS config**: `/.sops.yaml`
-- **Encrypted Cloudflare token**: `operations/secrets/cloudflare.enc.yaml`
-- **Deploy script**: `/deploy.sh`
-- **Private age key**: `~/.config/sops/age/keys.txt` (or `SOPS_AGE_KEY_FILE`)
+The same durability argument applies to decrypted values in general. A token
+that scrolls past in a terminal is in the scrollback, the session transcript,
+and possibly an issue or commit in a public repository. Extract only the key you
+need with `sops -d --extract`, send output to `/dev/null` or a variable, and
+never paste a decrypted value or an `AGE-SECRET-KEY-…` line anywhere that
+persists.
