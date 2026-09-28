@@ -1,141 +1,120 @@
 # Out of Context
 
-Static site for **Out of Context** — a Helsinki meetup / community for people who
-build with AI. "Ilta sinulle joka luot AI:lla. Demoja, ei kalvoja." Lives at
-`out-of-context.dev`. This repo is **public**
-(`github.com/jarimustonen/out-of-context`); it started as Jari's personal repo and
-was made public at the site's launch (2026-08-04). The intent is a
-community-owned public repo with PRs.
+Static site for **Out of Context**, a Helsinki meetup for people who build with
+AI. "Ilta sinulle joka luot AI:lla. Demoja, ei kalvoja." It lives at
+`out-of-context.dev` and is one page: who the evening is for, when and where the
+next one is, and a registration link. The event's own rule is the content's
+north star: if you talk, you show something running; no slides; crashing demos
+welcome. A good change to this site keeps that voice and gets the facts right,
+because the page is live and people plan an evening around what it says.
 
-## Technology
+The repository is public (`github.com/jarimustonen/out-of-context`) and meant
+to become community-owned with PRs. Commit messages, issue text, and anything
+committed are public. The one secret, the Cloudflare API token, is
+SOPS-encrypted; `operations/secrets/AGENTS.md` explains what it can do, how the
+zone is set up, and how to handle decrypted values.
 
-- **Generator**: [Zola](https://www.getzola.org/) (Rust static site generator, v0.22+).
-- **No backend, no build step beyond Zola, no cookies, no analytics.** The page
-  is a single self-contained HTML document with inline CSS + a tiny FI/EN toggle
-  script. Only external dependency is Google Fonts (Archivo).
-- **Deployment**: Cloudflare Pages via `./deploy.sh` (see Deployment below).
+## How the site is built
 
-## Structure
+Zola renders a single template, `templates/index.html`, into a self-contained
+HTML document with inline CSS and a small language-toggle script.
+`content/_index.md` exists only to select that template; every word of the
+page, including the event facts, lives in the template. `config.toml` supplies
+the base URL, the site title, and the meta description. `zola serve` previews
+at `http://127.0.0.1:1111`, `zola build` writes `public/`, and `./deploy.sh`
+builds and publishes to Cloudflare Pages. Deploying is cheap and reversible,
+since Pages keeps every deployment; the secrets document covers the token and
+the domain, redirect, and email routing that sit in front of the site.
 
-```
-out-of-context/
-├── config.toml            # Zola config (base_url, title, description)
-├── deploy.sh              # zola build → Cloudflare Pages
-├── .sops.yaml             # age recipients for encrypted secrets
-├── content/
-│   └── _index.md          # Homepage — template = "index.html", holds meta
-├── templates/
-│   └── index.html         # THE page. Bespoke design, FI+EN content inline.
-├── static/
-│   ├── favicon.svg        # Red square favicon — the brand's tile motif
-│   ├── og-image.png       # 1200×630 social-share card (generated, committed)
-│   └── apple-touch-icon.png
-├── tools/
-│   └── og-image/          # generators: generate.py (OG card) + luma_cover.py
-└── operations/
-    └── secrets/
-        ├── AGENTS.md              # secrets + deploy runbook, token permissions
-        └── cloudflare.enc.yaml    # SOPS-encrypted Cloudflare API token
-```
+The page tells its readers, in its own text, that it collects no data and uses
+no cookies. There is no backend, no analytics, and no third-party script; the
+only external request is Google Fonts for Archivo. A tracker or an embedded
+widget would break a promise printed on the page.
 
-The homepage is rendered from `templates/index.html`, driven by `content/_index.md`
-(`section` in Tera). `config.title` / `config.description` fill `<title>` and the
-meta description. `zola build` → `public/` (gitignored).
+Finnish is the primary language and the default. Both languages ship in the
+one document: the `#lang-fi` block is shown, `#lang-en` is hidden, and
+`setLang()` swaps them client-side and updates `<html lang>`. The two blocks
+are complete parallel copies of the page, including the hero grid SVG, so a
+change to one is half a change until the other has it too. Nothing checks
+that they agree, and nothing renders the page in a test; look at it in
+`zola serve` in both languages.
 
-## Development
+## Where the event facts live
 
-```bash
-zola serve      # local hot-reload at http://127.0.0.1:1111
-zola build      # production build → public/
-```
+The event number, date, time, venue, seat count, and Lu.ma URL are literal
+strings in several places with no shared source:
 
-## Deployment
+- `templates/index.html`: the `<title>` and the Open Graph and Twitter meta
+  in the head, then the FI block and the EN block (hero eyebrow, headline,
+  registration box).
+- `tools/og-image/generate.py` and `tools/og-image/luma_cover.py`, which
+  render the share card `static/og-image.png` and the Lu.ma cover.
+- `README.md`'s status line and the "Current event" section below.
 
-Cloudflare Pages (project `out-of-context`, custom domain `out-of-context.dev`),
-same pattern as frondeo.ai:
-
-```bash
-./deploy.sh     # zola build → wrangler pages deploy
-```
-
-The Cloudflare API token is read from `CLOUDFLARE_API_TOKEN` or the SOPS-encrypted
-`operations/secrets/cloudflare.enc.yaml`. **Full setup — putting the real token
-in place and the exact token permissions — is in
-[`operations/secrets/AGENTS.md`](operations/secrets/AGENTS.md).** First deploy
-serves at `out-of-context.pages.dev`. The custom domain (`out-of-context.dev`
-apex + `www`→apex 301 redirect), TLS, and email routing (`hei@` → Jari) are
-**done** — all documented in `operations/secrets/AGENTS.md`.
-
-## Design
-
-Deliberately **not** the generic AI-generated look. Modernist red grid:
-
-- **Accent**: `#ec3013` (red) on a warm off-white `#f3f2f2`.
-- **Type**: Archivo (800 headings), no rounded corners, 2px dividers, hard grid.
-- Signature element: the "context window" grid in the hero — a 5×7 grid that
-  spells **OUT OF CONTEXT** in braille, one letter per cell. Rendered as inline
-  SVG (see `templates/index.html`).
-- **Tile motif** (the unifying brand language): each cell is a red **favicon
-  tile** — a red square with off-white square dots and off-white gaps, mirroring
-  `favicon.svg` (red ground, off-white marks). The same motif carries across the
-  favicon, hero grid, `og-image.png`, and the Lu.ma cover. On red surfaces
-  (favicon) the marks are off-white; on the off-white field the tiles are red.
-- Bilingual: FI shown by default, EN toggled client-side (`setLang()`); no routing,
-  both languages ship in one document. The braille grid SVG is duplicated in both
-  language blocks — edit both.
-
-Editorial rule that governs everything: *one bold choice, everything else quiet.*
-The event's own rule — **if you talk, you show something running; no slides;
-crashing demos welcome** — is the content's north star.
+When the event changes, all of these move together. The images are the
+easiest to forget because nothing compares them with the page;
+`tools/og-image/AGENTS.md` covers rendering them and the font trap, and the
+Lu.ma cover has to be uploaded to Lu.ma by hand, which an agent cannot do. The
+page also states the recurrence rule, "joka kuun se keskiviikko joka osuu
+päiville 12.–18.", so a new date should satisfy it or the rule text has to
+change with it. Social platforms cache link previews per URL: the origin
+serves the latest card, but a link shared earlier shows the old one until it
+is re-scraped (Facebook's Sharing Debugger) or shared with a changed query
+string such as `/?v=2`.
 
 ## Current event
 
-The site went public on 2026-08-04. It currently promotes **Demoilta #2** on
-14 October 2026 at Vilhonkatu 4 B 18; registration is at
-`luma.com/tf4w6epb`. The site is indexable, the repository is public,
-`hei@` email routing is live, and `www` redirects to the apex domain.
+The site went public on 2026-08-04. It now promotes **Demoilta #2** on
+Wednesday 14 October 2026 at 17:00, Vilhonkatu 4 B 18, Helsinki, free, about
+30 seats; registration is at `luma.com/tf4w6epb`. The page is indexable,
+`hei@out-of-context.dev` forwards to Jari, and `www` redirects to the apex.
+Other documents in this repo treat this section as the statement of what the
+site currently promotes, so it changes together with the event.
 
-**Social/OG assets are generated, not hand-drawn.** After changing the date or
-venue, rerun `python3 tools/og-image/generate.py` (the `og-image.png` share card)
-and `python3 tools/og-image/luma_cover.py` (the Lu.ma cover), then commit. Both
-need `rsvg-convert` + the Archivo Black font — see `tools/og-image/AGENTS.md`.
-Note: social platforms (WhatsApp, LinkedIn) cache OG previews per URL; our origin
-always serves the latest, but to force a fresh preview share `…/?v=2` or re-scrape
-via Facebook's Sharing Debugger.
+## Design
+
+Deliberately not the generic AI-generated look. A modernist red grid: accent
+`#ec3013` on warm off-white `#f3f2f2`, Archivo with 800-weight headings, no
+rounded corners, 2px dividers, a hard grid. The signature element is the
+"context window" in the hero: a grid seven tiles wide and five tall that
+spells OUT OF CONTEXT in braille, one letter per tile, as inline SVG. Each
+tile is the favicon, a red square with off-white square dots, so the same
+motif carries across `favicon.svg`, the hero, the share card, and the Lu.ma
+cover. On red surfaces the marks are off-white; on the off-white field the
+tiles are red. The braille letter map and tile geometry are duplicated in the
+two hero SVGs and in both image scripts, so a change to the motif has four
+homes.
+
+The editorial rule that governs everything: *one bold choice, everything else
+quiet.* Copy is short and direct, written in Finnish first; the English is a
+translation of equal standing, not a summary. Wording and layout decisions
+inside this language are yours to make and to say you made. A departure from
+it, such as a new colour, rounded corners, a second bold element, or a
+different typeface, is a matter of taste that Jari owns; raise it before it
+goes live rather than after.
+
+## Repository conventions
+
+- Every directory with agent guidance has `AGENTS.md` as the file and
+  `CLAUDE.md` as a symlink to it, so every harness reads the same text. Long
+  topics split into `AGENTS-<TOPIC>.md`.
+- `AGENTS-AI-FIRST-CLI.md` is a copy of the CLI canon shared across Jari's
+  repositories, maintained upstream in `homebase`. This repo has no CLI; the
+  copy is here so that a CLI added later follows the family conventions. Edits
+  belong upstream, because a local edit diverges silently from every other
+  copy.
+- Issues live in `issues/` and are managed by `issuectl` through the `/issue`
+  skill; `issues/AGENTS.md` and `.issuectl/AGENTS.md` are the references.
+  Plans, analyses, and designs live under the issue they belong to.
+- `history/` is gitignored scratch space for an agent's ephemeral notes.
+  Durable knowledge goes in the most specific `AGENTS.md` or in an issue.
+  `public/` and `.wrangler/` are build and deploy output.
 
 ## Provenance
 
-The page was first built as a hidden team-demo inside the Frondeo Zola site
-(`frondeo.ai/out-of-context/`). It was spun out here into its own repo so it can
-grow into a community-owned site on its own domain. The Frondeo copy is being
-retired now that this standalone repo exists.
-
-## CLI Design Principles
-
-This project follows the AI-first CLI conventions in
-[`AGENTS-AI-FIRST-CLI.md`](AGENTS-AI-FIRST-CLI.md) — shared canon copied from
-`homebase`; treat it as read-only reference, not a project-local doc to edit.
-(This repo currently ships no CLI, but the conventions apply if one is added.)
-
-## Documentation Pattern
-
-Every directory follows this structure:
-
-- `CLAUDE.md` — symlink to `AGENTS.md`
-- `AGENTS.md` — all AI-relevant info (consolidated)
-- `AGENTS-<TOPIC>.md` — complex topics split out (optional)
-
-## Issues & Planning
-
-Issue tracking is managed by [`issuectl`](https://github.com/jarimustonen/issuectl).
-Use the `/issue` skill (installed by `issuectl init`) to create, search, update,
-and close issues.
-
-- `issues/<slug>/item.md` — every issue and epic (flat layout)
-- Status lives in the `status:` frontmatter field, not in the path
-- All planning docs (plans, analyses, designs) live under their parent issue directory
-
-## Gitignored directories
-
-- `history/` — agent scratchpad and ephemeral planning docs (not tracked)
-- `public/` — Zola build output
+The page began as a hidden demo inside the Frondeo Zola site at
+`frondeo.ai/out-of-context/` and was spun out into this repo so it could have
+its own domain and community. That is why the deploy script and the secrets
+setup mirror frondeo.ai's, and why the Cloudflare account is shared with
+Frondeo while the token is not. The Frondeo copy was to be retired once this
+repo existed.
