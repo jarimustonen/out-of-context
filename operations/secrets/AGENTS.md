@@ -13,7 +13,7 @@ file itself is fine to commit, and its `#` comment lines are encrypted too.
 finds the token (environment variable first, then this directory's encrypted
 file). The script refuses to run with the placeholder token, so a failed token
 check is a decryption problem, not a placeholder one. The real token has been
-in place since launch on 2026-08-04.
+in place since 2026-08-02, before launch.
 
 Deploying is routine and cheap. Pages keeps every deployment and the dashboard
 can roll back to any of them, so a bad deploy costs a minute, not the site. Do
@@ -26,10 +26,10 @@ sops -d operations/secrets/cloudflare.enc.yaml >/dev/null && echo OK
 ```
 
 Decryption uses the age key at `~/.config/sops/age/keys.txt` (or
-`SOPS_AGE_KEY_FILE`). Jari's two machines hold it; it is the same key used for
-the frondeo repo. The account id can optionally be pinned as `account_id` inside
-the encrypted file to skip the zone lookup; it is not pinned today and the
-lookup works, so this only matters if the zone lookup ever fails.
+`SOPS_AGE_KEY_FILE`). Two of Jari's machines hold it; it is the same key used
+for the frondeo repo. The account id can optionally be pinned as `account_id`
+inside the encrypted file to skip the zone lookup; it is not pinned today and
+the lookup works, so this only matters if the zone lookup ever fails.
 
 ## What the token can do, and why it matters
 
@@ -49,11 +49,12 @@ each one is for, so that a replacement token can be cut with the same shape:
 
 The zone grants mean a leaked token lets someone rewrite this domain's DNS and
 mail routing, not just push a deployment. That is why it is a separate token
-from frondeo's, whose zone grants cover frondeo.ai and frondeo.cloud: a leak
-here should not reach there. If the token is ever exposed, whether in a
-transcript, a commit, or an issue, the fix is to revoke and re-create it in the
-dashboard, which only Jari can do; removing an age recipient does not help,
-because the public git history still holds every earlier encrypted revision.
+from frondeo's, whose zone grants cover every zone in the account, this one
+included: a leak here should not reach there. If the token is ever exposed,
+whether in a transcript, a commit, or an issue, the fix is to revoke and
+re-create it in the dashboard, which only Jari can do; removing an age
+recipient does not help, because the public git history still holds every
+earlier encrypted revision.
 
 Things the token deliberately cannot do are account-level dashboard steps:
 enabling Email Routing on the zone, and adding or verifying the destination
@@ -89,10 +90,11 @@ down for everyone until someone notices.
 
 ## Who can decrypt
 
-`/.sops.yaml` lists the recipients (currently Jari's two machines) and contains
-the steps for adding a maintainer as the project becomes community-owned; it is
-the source for that procedure and is not repeated here. Two things behind those
-steps are worth understanding rather than just following:
+`/.sops.yaml` lists the recipients (currently two of Jari's machines) and
+contains the steps for adding a maintainer as the project becomes
+community-owned; it is the source for that procedure and is not repeated here.
+Two things behind those steps are worth understanding rather than just
+following:
 
 - Bare `age-keygen` prints the private key to stdout. In an agent session that
   means the key lands in the transcript, and transcripts and terminal logs are
