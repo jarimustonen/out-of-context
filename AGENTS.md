@@ -20,7 +20,8 @@ Zola renders a single template, `templates/index.html`, into a self-contained
 HTML document with inline CSS and a small language-toggle script.
 `content/_index.md` exists only to select that template; every word of the
 page, including the event facts, lives in the template. `config.toml` supplies
-the base URL, the site title, and the meta description. `zola serve` previews
+the base URL and the meta description (reused for the Open Graph and Twitter
+descriptions); the template does not use its `title`. `zola serve` previews
 at `http://127.0.0.1:1111`, `zola build` writes `public/`, and `./deploy.sh`
 builds and publishes to Cloudflare Pages. Deploying is cheap and reversible,
 since Pages keeps every deployment; the secrets document covers the token and
@@ -45,8 +46,8 @@ The event number, date, time, venue, seat count, and Lu.ma URL are literal
 strings in several places with no shared source:
 
 - `templates/index.html`: the `<title>` and the Open Graph and Twitter meta
-  in the head, then the FI block and the EN block (hero eyebrow, headline,
-  registration box).
+  in the head, then the FI block and the EN block (hero eyebrow, headline and
+  sign-up button, the seats cell of the facts row, and the registration box).
 - `tools/og-image/generate.py` and `tools/og-image/luma_cover.py`, which
   render the share card `static/og-image.png` and the Lu.ma cover.
 - `README.md`'s status line and the "Current event" section below.
@@ -95,11 +96,12 @@ goes live rather than after.
 
 ## Repository conventions
 
-- Every directory with agent guidance has `AGENTS.md` as the file and
-  `CLAUDE.md` as a symlink to it, so every harness reads the same text. Long
-  topics split into `AGENTS-<TOPIC>.md`.
+- Every directory with agent guidance, apart from the issuectl-managed
+  `issues/` and `.issuectl/`, has `AGENTS.md` as the file and `CLAUDE.md` as a
+  symlink to it, so every harness reads the same text. Long topics split into
+  `AGENTS-<TOPIC>.md`.
 - `AGENTS-AI-FIRST-CLI.md` is a copy of the CLI canon shared across Jari's
-  repositories, maintained upstream in `homebase`. This repo has no CLI; the
+  repositories, maintained upstream in `project-canon`. This repo has no CLI; the
   copy is here so that a CLI added later follows the family conventions. Edits
   belong upstream, because a local edit diverges silently from every other
   copy.
@@ -116,5 +118,5 @@ The page began as a hidden demo inside the Frondeo Zola site at
 `frondeo.ai/out-of-context/` and was spun out into this repo so it could have
 its own domain and community. That is why the deploy script and the secrets
 setup mirror frondeo.ai's, and why the Cloudflare account is shared with
-Frondeo while the token is not. The Frondeo copy was to be retired once this
-repo existed.
+Frondeo while the token is not. The Frondeo copy's source was removed from the
+Frondeo monorepo when this repo was created on 2026-08-02.
