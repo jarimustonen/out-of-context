@@ -2,9 +2,9 @@
 
 Guidance for agents working with this repository's issue tracker. The
 generated block at the bottom is rewritten by `issuectl doctor --fix` from
-`issues/.schema.yaml` (and `.issuectl/transitions.yaml`, if one exists);
-the prose above it is ours to maintain. Project-wide guidance lives in the
-top-level `AGENTS.md`.
+issuectl's built-in schema merged with `issues/.schema.yaml` (and
+`.issuectl/transitions.yaml`, if one exists); the prose above it is ours
+to maintain. Project-wide guidance lives in the top-level `AGENTS.md`.
 
 ## What the tracker is for here
 
@@ -43,10 +43,10 @@ Status changes are ordinary updates (`issuectl update --status` or
 `issuectl note --decision` so the transition and its rationale sit
 together. If a `.issuectl/transitions.yaml` is ever added, its rules are
 enforced at write time and a refused transition comes back as a
-`TransitionViolation` error naming what is missing; read it rather than
-retrying with different flags. At the moment this repository declares no
-transition rules and no required body sections, as the generated block
-below records.
+`transition-illegal` error (exit code 2) naming what is missing; read it
+rather than retrying with different flags. At the moment this repository
+declares no transition rules and no required body sections, as the
+generated block below records.
 
 Commits that belong to an issue carry a `Refs-Issue: @<slug>` trailer.
 That trailer is what `issuectl sync-commits` and `issuectl changelog`
