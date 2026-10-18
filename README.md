@@ -29,7 +29,7 @@ then `./deploy.sh`. Token permissions + custom-domain setup: `operations/secrets
 ## Status
 
 Public at [out-of-context.dev](https://out-of-context.dev). The current event is
-Demoilta #2 on 14 October 2026.
+Demoilta #3 on 18 November 2026.
 
 ## License
 

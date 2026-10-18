@@ -65,9 +65,10 @@ string such as `/?v=2`.
 
 ## Current event
 
-The site went public on 2026-08-04. It now promotes **Demoilta #2** on
-Wednesday 14 October 2026 at 17:00, Vilhonkatu 4 B 18, Helsinki, free, about
-30 seats; registration is at `luma.com/tf4w6epb`. The page is indexable,
+The site went public on 2026-08-04. It now promotes **Demoilta #3** on
+Wednesday 18 November 2026 at 17:00, Vilhonkatu 4 B 18, Helsinki, free, about
+30 seats; registration is not open yet. Do not reuse the previous event’s Lu.ma link;
+add the new link in both language blocks when it is available. The page is indexable,
 `hei@out-of-context.dev` forwards to Jari, and `www` redirects to the apex.
 Other documents in this repo treat this section as the statement of what the
 site currently promotes, so it changes together with the event.
