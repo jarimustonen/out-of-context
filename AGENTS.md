@@ -61,7 +61,9 @@ päiville 12.–18.", so a new date should satisfy it or the rule text has to
 change with it. Social platforms cache link previews per URL: the origin
 serves the latest card, but a link shared earlier shows the old one until it
 is re-scraped (Facebook's Sharing Debugger) or shared with a changed query
-string such as `/?v=2`.
+string such as `/?v=2`. LinkedIn also caches the image by its own URL, so the
+`og:image` and `twitter:image` URLs carry a version query (`og-image.png?v=3`)
+that is bumped whenever the card changes.
 
 ## Current event
 
