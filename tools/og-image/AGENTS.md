@@ -11,7 +11,8 @@ line, and the braille "context window" grid rendered as favicon tiles.
 - `luma_cover.py` writes `luma-cover.svg` and `luma-cover.png` here. The PNG is
   the 1080×1080 Lu.ma event cover. The site does not serve it; someone has to
   upload it to the Lu.ma event by hand, which an agent cannot do. Say so when
-  you regenerate it.
+  you regenerate it. `luma_cover.py NUMBER DATE` writes `luma-cover-NUMBER.png` for an
+  already announced later event, whose Lu.ma page needs its own cover.
 
 The SVGs are committed alongside the PNGs so that a change to the composition
 shows up as a readable diff rather than a binary blob.

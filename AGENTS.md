@@ -67,8 +67,10 @@ string such as `/?v=2`.
 
 The site went public on 2026-08-04. It now promotes **Demoilta #3** on
 Wednesday 18 November 2026 at 17:00, Vilhonkatu 4 B 18, Helsinki, free, about
-30 seats; registration is not open yet. Do not reuse the previous event’s Lu.ma link;
-add the new link in both language blocks when it is available. The page is indexable,
+30 seats, registration at `https://luma.com/qgu2394i`. The "Seuraavat" cell
+already names **Demoilta #4** on Wednesday 16 December 2026, whose Lu.ma page
+is `https://luma.com/2gh6fn1p`; when #4 becomes the current event, that cell
+moves on too. The page is indexable,
 `hei@out-of-context.dev` forwards to Jari, and `www` redirects to the apex.
 Other documents in this repo treat this section as the statement of what the
 site currently promotes, so it changes together with the event.

@@ -7,13 +7,28 @@
 # Output: luma-cover.svg + luma-cover.png (this dir). Not shipped by the site —
 # upload luma-cover.png as the Lu.ma event cover. Needs rsvg-convert + Archivo
 # Black (see AGENTS.md).
+#
+# The defaults are the event the site currently promotes. To make the cover of
+# an already announced later event, pass its number and date:
+#   luma_cover.py 4 16.12.2026   -> luma-cover-4.svg + luma-cover-4.png
 
 import os
 import subprocess
+import sys
+
+NUMBER = "3"
+DATE = "18.11.2026"
+TIME = "17:00"
+SUFFIX = ""
+if len(sys.argv) == 3:
+    NUMBER, DATE = sys.argv[1], sys.argv[2]
+    SUFFIX = f"-{NUMBER}"
+elif len(sys.argv) != 1:
+    sys.exit("usage: luma_cover.py [NUMBER DATE]")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SVG_PATH = os.path.join(HERE, "luma-cover.svg")
-PNG_PATH = os.path.join(HERE, "luma-cover.png")
+SVG_PATH = os.path.join(HERE, f"luma-cover{SUFFIX}.svg")
+PNG_PATH = os.path.join(HERE, f"luma-cover{SUFFIX}.png")
 
 BG = "#f3f2f2"; INK = "#201e1d"; RED = "#ec3013"; OFF = "#f3f2f2"
 FF = "Archivo Black, Archivo, sans-serif"
@@ -28,8 +43,8 @@ p = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox=
 p.append(f'<rect width="{W}" height="{H}" fill="{BG}"/>')
 p.append(f'<rect x="1" y="1" width="{W-2}" height="{H-2}" fill="none" stroke="{INK}" stroke-width="2"/>')
 p.append(f'<text x="{LX}" y="112" font-family="{FF}" font-size="42" letter-spacing="2" fill="{INK}">OUT OF CONTEXT</text>')
-p.append(f'<text x="{LX-4}" y="248" font-family="{FF}" font-size="104" letter-spacing="-2" fill="{INK}">Demoilta #3</text>')
-p.append(f'<text x="{LX}" y="324" font-family="{FF}" font-size="32" letter-spacing="0.5" fill="{RED}">KE 18.11.2026 &#183; KLO 17:00</text>')
+p.append(f'<text x="{LX-4}" y="248" font-family="{FF}" font-size="104" letter-spacing="-2" fill="{INK}">Demoilta #{NUMBER}</text>')
+p.append(f'<text x="{LX}" y="324" font-family="{FF}" font-size="32" letter-spacing="0.5" fill="{RED}">KE {DATE} &#183; KLO {TIME}</text>')
 p.append(f'<text x="{LX}" y="366" font-family="{FF}" font-size="28" letter-spacing="0.5" fill="{INK}" opacity="0.72">VILHONKATU 4 B 18 &#183; ILMAINEN</text>')
 
 # braille as big red favicon tiles, full content width
