@@ -29,7 +29,8 @@ then `./deploy.sh`. Token permissions + custom-domain setup: `operations/secrets
 ## Status
 
 Public at [out-of-context.dev](https://out-of-context.dev). The current event is
-Demoilta #3 on 18 November 2026; the next one, #4, is on 16 December 2026.
+Demoilta #3 on 18 November 2026, held jointly with Vibe Coding Finland at
+Kisko Labs with registration on Meetup; the next one, #4, is on 16 December 2026.
 
 ## License
 

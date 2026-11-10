@@ -68,8 +68,13 @@ that is bumped whenever the card changes.
 ## Current event
 
 The site went public on 2026-08-04. It now promotes **Demoilta #3** on
-Wednesday 18 November 2026 at 17:00, Vilhonkatu 4 B 18, Helsinki, free, about
-30 seats, registration at `https://luma.com/qgu2394i`. The "Seuraavat" cell
+Wednesday 18 November 2026, a joint evening with Vibe Coding Finland: doors at
+17:00, programme at 17:30, Kisko Labs, Panimokatu 2A, 00580 Helsinki, free,
+about 75 seats, registration on Meetup at
+`https://www.meetup.com/vibe-coding-finland/events/317367448/`. The earlier
+Lu.ma page `https://luma.com/qgu2394i` is no longer linked; its registrants
+were asked to register again on Meetup. The share card shows only the date and
+time, so it did not change with the venue. The "Seuraavat" cell
 already names **Demoilta #4** on Wednesday 16 December 2026, whose Lu.ma page
 is `https://luma.com/2gh6fn1p`; when #4 becomes the current event, that cell
 moves on too. The page is indexable,
