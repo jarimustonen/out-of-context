@@ -73,8 +73,9 @@ Wednesday 18 November 2026, a joint evening with Vibe Coding Finland: doors at
 about 75 seats, registration on Meetup at
 `https://www.meetup.com/vibe-coding-finland/events/317367448/`. The earlier
 Lu.ma page `https://luma.com/qgu2394i` is no longer linked; its registrants
-were asked to register again on Meetup. The share card shows only the date and
-time, so it did not change with the venue. The "Seuraavat" cell
+were asked to register again on Meetup. The share card and the Lu.ma cover were
+re-rendered with the Kisko Labs venue line; `luma_cover.py 4 16.12.2026` still
+renders #4 at Vilhonkatu. The "Seuraavat" cell
 already names **Demoilta #4** on Wednesday 16 December 2026, whose Lu.ma page
 is `https://luma.com/2gh6fn1p`; when #4 becomes the current event, that cell
 moves on too. The page is indexable,

@@ -19,10 +19,12 @@ import sys
 NUMBER = "3"
 DATE = "18.11.2026"
 TIME = "17:00"
+VENUE = "KISKO LABS &#183; PANIMOKATU 2A"
 SUFFIX = ""
 if len(sys.argv) == 3:
     NUMBER, DATE = sys.argv[1], sys.argv[2]
     SUFFIX = f"-{NUMBER}"
+    VENUE = "VILHONKATU 4 B 18"
 elif len(sys.argv) != 1:
     sys.exit("usage: luma_cover.py [NUMBER DATE]")
 
@@ -45,7 +47,7 @@ p.append(f'<rect x="1" y="1" width="{W-2}" height="{H-2}" fill="none" stroke="{I
 p.append(f'<text x="{LX}" y="112" font-family="{FF}" font-size="42" letter-spacing="2" fill="{INK}">OUT OF CONTEXT</text>')
 p.append(f'<text x="{LX-4}" y="248" font-family="{FF}" font-size="104" letter-spacing="-2" fill="{INK}">Demoilta #{NUMBER}</text>')
 p.append(f'<text x="{LX}" y="324" font-family="{FF}" font-size="32" letter-spacing="0.5" fill="{RED}">KE {DATE} &#183; KLO {TIME}</text>')
-p.append(f'<text x="{LX}" y="366" font-family="{FF}" font-size="28" letter-spacing="0.5" fill="{INK}" opacity="0.72">VILHONKATU 4 B 18 &#183; ILMAINEN</text>')
+p.append(f'<text x="{LX}" y="366" font-family="{FF}" font-size="28" letter-spacing="0.5" fill="{INK}" opacity="0.72">{VENUE} &#183; ILMAINEN</text>')
 
 # braille as big red favicon tiles, full content width
 cols, rows = 7, 5

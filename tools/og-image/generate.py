@@ -44,7 +44,7 @@ LX = 72
 parts.append(f'<text x="{LX}" y="132" font-family="{FF}" font-size="56" letter-spacing="1" fill="{INK}">OUT OF CONTEXT</text>')
 parts.append(f'<text x="{LX-4}" y="378" font-family="{FF}" font-size="84" letter-spacing="-2" fill="{INK}">Demoilta #3</text>')
 parts.append(f'<text x="{LX}" y="512" font-family="{FF}" font-size="34" letter-spacing="0.5" fill="{RED}">KE 18.11.2026 &#183; KLO 17:00</text>')
-parts.append(f'<text x="{LX}" y="558" font-family="{FF}" font-size="30" letter-spacing="0.5" fill="{INK}" opacity="0.72">VILHONKATU 4 B 18 &#183; ILMAINEN</text>')
+parts.append(f'<text x="{LX}" y="558" font-family="{FF}" font-size="30" letter-spacing="0.5" fill="{INK}" opacity="0.72">KISKO LABS &#183; PANIMOKATU 2A &#183; ILMAINEN</text>')
 
 # ---- right: braille "OUT OF CONTEXT" as big favicon tiles (no orange panel) ----
 DOTS = {1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (1, 0), 5: (1, 1), 6: (1, 2)}
