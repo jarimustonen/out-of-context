@@ -15,7 +15,8 @@ zola serve      # local preview at http://127.0.0.1:1111
 zola build      # production build → public/
 ```
 
-Edit the page in `templates/index.html`; site-wide metadata in `config.toml`.
+Edit the main page in `templates/index.html` and the presenter page in
+`templates/demota.html` (shared head, styles, header, and footer in `templates/base.html`); site-wide metadata in `config.toml`.
 
 ## Deploy
 

@@ -2,8 +2,9 @@
 
 Static site for **Out of Context**, a Helsinki meetup for people who build with
 AI. "Ilta sinulle joka luot AI:lla. Demoja, ei kalvoja." It lives at
-`out-of-context.dev` and is one page: who the evening is for, when and where the
-next one is, and a registration link. The event's own rule is the content's
+`out-of-context.dev`. The main page says who the evening is for, when and where
+the next one is, and links to registration; `/demota/` is where would-be
+presenters tell us what they would show. The event's own rule is the content's
 north star: if you talk, you show something running; no slides; crashing demos
 welcome. A good change to this site keeps that voice and gets the facts right,
 because the page is live and people plan an evening around what it says.
@@ -16,10 +17,18 @@ zone is set up, and how to handle decrypted values.
 
 ## How the site is built
 
-Zola renders a single template, `templates/index.html`, into a self-contained
-HTML document with inline CSS and a small language-toggle script.
-`content/_index.md` exists only to select that template; every word of the
-page, including the event facts, lives in the template. `config.toml` supplies
+`templates/base.html` holds the head, the inline CSS, the header with the
+language toggle, and the footer; each page's template fills its `meta` and
+`content` blocks, so every page is still one self-contained HTML document.
+`templates/index.html` is the main page, selected by `content/_index.md`, and
+`templates/demota.html` is the presenter page, selected by `content/demota.md`.
+Every word of a page, including the event facts, lives in its template.
+
+The presenter form on `/demota/` has no backend: its script assembles a
+`mailto:hei@out-of-context.dev` message in the visitor's own mail client, so
+nothing is collected until they press Send. That keeps the page's no-data
+promise; a form service or Pages Function would break it and is Jari's call.
+The form's evening choices name the next demo night and move with the event. `config.toml` supplies
 the base URL and the meta description (reused for the Open Graph and Twitter
 descriptions); the template does not use its `title`. `zola serve` previews
 at `http://127.0.0.1:1111`, `zola build` writes `public/`, and `./deploy.sh`
@@ -45,8 +54,10 @@ that they agree, and nothing renders the page in a test; look at it in
 The event number, date, time, venue, seat count, and Lu.ma URL are literal
 strings in several places with no shared source:
 
+- `templates/demota.html`: the next evening in the form's "Ilta"/"Evening"
+  choices.
 - `templates/index.html`: the `<title>` and the Open Graph and Twitter meta
-  in the head, then the FI block and the EN block (hero eyebrow, headline and
+  in its `meta` block, then the FI block and the EN block (hero eyebrow, headline and
   sign-up button, the seats cell of the facts row, and the registration box).
 - `tools/og-image/generate.py` and `tools/og-image/luma_cover.py`, which
   render the share card `static/og-image.png` and the Lu.ma cover.

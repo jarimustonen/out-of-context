@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block meta %}
+<title>Haluan demota · Out of Context</title>
+<meta name="description" content="Näytä jotain, minkä olet rakentanut AI:lla. Out of Contextin demoillat Helsingissä.">
+<link rel="canonical" href="{{ config.base_url }}/demota/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Out of Context">
+<meta property="og:locale" content="fi_FI">
+<meta property="og:url" content="{{ config.base_url }}/demota/">
+<meta property="og:title" content="Haluan demota · Out of Context">
+<meta property="og:description" content="Näytä jotain, minkä olet rakentanut AI:lla. Sen ei tarvitse olla valmis.">
+<meta property="og:image" content="{{ config.base_url }}/og-image.png?v=4">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Haluan demota · Out of Context">
+<meta name="twitter:image" content="{{ config.base_url }}/og-image.png?v=4">
+{% endblock meta %}
+{% block content %}
+  <div id="lang-fi">
+    <section style="display:grid; grid-template-columns:1.35fr 1fr; gap:48px; padding:56px 0 44px; border-bottom:2px solid var(--color-divider)">
+      <div>
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:28px">Out of Context · Helsinki</div>
+        <h1 style="font-size:clamp(38px,6.2vw,78px); line-height:0.98; letter-spacing:-0.03em; margin:0 0 24px; text-wrap:balance">Haluan demota</h1>
+        <p style="font-size:20px; line-height:1.4; max-width:34ch; margin:0 0 16px">Näytä jotain, minkä olet rakentanut AI:lla. Sen ei tarvitse olla valmis.</p>
+        <p style="font-size:16px; line-height:1.45; max-width:48ch; margin:0">Riittää, että se on sinusta kiinnostava ja pyörii koneella. Kalvoja ei tarvita, ja demo saa kaatua. Esityksen voi pitää suomeksi tai englanniksi.</p>
+      </div>
+      <aside style="border-left:2px solid var(--color-divider); padding-left:24px">
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px">Muodot</div>
+        <ul style="list-style:none; margin:0; padding:0; font-size:16px; border-top:2px solid var(--color-divider)">
+          <li style="padding:12px 0; border-bottom:2px solid var(--color-divider)">Salamademo, noin 5 minuuttia</li>
+          <li style="padding:12px 0; border-bottom:2px solid var(--color-divider)">Pidempi demo, noin 10–15 minuuttia</li>
+          <li style="padding:12px 0; border-bottom:2px solid var(--color-divider)">Kummankin perään keskustelu</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0; border-bottom:2px solid var(--color-divider)">
+      <div style="padding:28px 20px 28px 0; border-right:2px solid var(--color-divider)">
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px">1</div>
+        <div style="font-size:16px">Kerro alla, mitä näyttäisit. Pari lausetta riittää.</div>
+      </div>
+      <div style="padding:28px 20px; border-right:2px solid var(--color-divider)">
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px">2</div>
+        <div style="font-size:16px">Sovitaan lyhyt Zoom-läpikäynti, jossa rajataan demo yhdessä. Jos esiintyminen jännittää, sano se.</div>
+      </div>
+      <div style="padding:28px 0 28px 20px">
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px">3</div>
+        <div style="font-size:16px">Sovitaan yhden lauseen kuvaus ohjelmaan. Mitään ei julkaista ilman lupaasi, ja kuvaamisesta saa kieltäytyä.</div>
+      </div>
+    </section>
+
+    <section style="display:grid; grid-template-columns:1fr 1fr; gap:48px; padding:44px 0 56px">
+      <div>
+        <h3 style="font-size:26px; margin:0 0 12px">Kerro demostasi</h3>
+        <p style="font-size:16px; max-width:44ch; margin:0 0 8px">Lomake kokoaa viestin valmiiksi sähköpostiohjelmaasi, ja sinä lähetät sen. Vastaan itse.</p>
+        <p class="text-muted" style="font-size:14px; margin:0">Tämä sivu ei kerää dataa eikä käytä evästeitä. Mitään ei lähetetä ennen kuin painat sähköpostiohjelmassasi Lähetä.</p>
+      </div>
+      <form data-demo-form data-subject="Haluan demota" style="border:2px solid var(--color-divider); padding:24px; display:flex; flex-direction:column; gap:16px">
+        <div class="field"><label for="fi-name">Nimi</label><input class="input" id="fi-name" name="name" data-label="Nimi" required autocomplete="name"></div>
+        <div class="field"><label for="fi-what">Mitä näyttäisit?</label><textarea class="input" id="fi-what" name="what" data-label="Mitä näyttäisit?" rows="4" required placeholder="Rakensin ..., joka ..."></textarea></div>
+        <div class="field"><label for="fi-link">Linkki (valinnainen)</label><input class="input" id="fi-link" name="link" data-label="Linkki" placeholder="https://"></div>
+        <div class="field"><label for="fi-len">Pituus</label><select class="input" id="fi-len" name="len" data-label="Pituus"><option>Salamademo, noin 5 min</option><option>Pidempi demo, noin 10–15 min</option><option>En tiedä vielä</option></select></div>
+        <div class="field"><label for="fi-when">Ilta</label><select class="input" id="fi-when" name="when" data-label="Ilta"><option>Demoilta #4 · ke 16.12.</option><option>Mikä tahansa tuleva ilta</option><option>Joku myöhempi ilta</option></select></div>
+        <button type="submit" class="btn btn-primary" style="justify-content:flex-start; font-size:16px; padding:16px 20px; width:100%; box-sizing:border-box; border:0; cursor:pointer">Avaa sähköposti</button>
+        <div class="text-muted" style="font-size:13px">Jos sähköposti ei aukea, lähetä samat tiedot osoitteeseen <a href="mailto:hei@out-of-context.dev?subject=Haluan%20demota">hei@out-of-context.dev</a>.</div>
+      </form>
+    </section>
+  </div>
+
+  <div id="lang-en" hidden>
+    <section style="display:grid; grid-template-columns:1.35fr 1fr; gap:48px; padding:56px 0 44px; border-bottom:2px solid var(--color-divider)">
+      <div>
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:28px">Out of Context · Helsinki</div>
+        <h1 style="font-size:clamp(38px,6.2vw,78px); line-height:0.98; letter-spacing:-0.03em; margin:0 0 24px; text-wrap:balance">I want to demo</h1>
+        <p style="font-size:20px; line-height:1.4; max-width:34ch; margin:0 0 16px">Show something you've built with AI. It doesn't have to be finished.</p>
+        <p style="font-size:16px; line-height:1.45; max-width:48ch; margin:0">It's enough that you find it interesting and that it runs on your machine. No slides needed, and demos can crash. Talks in Finnish or English.</p>
+      </div>
+      <aside style="border-left:2px solid var(--color-divider); padding-left:24px">
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px">Formats</div>
+        <ul style="list-style:none; margin:0; padding:0; font-size:16px; border-top:2px solid var(--color-divider)">
+          <li style="padding:12px 0; border-bottom:2px solid var(--color-divider)">Lightning demo, about 5 minutes</li>
+          <li style="padding:12px 0; border-bottom:2px solid var(--color-divider)">Longer demo, about 10–15 minutes</li>
+          <li style="padding:12px 0; border-bottom:2px solid var(--color-divider)">Discussion after each</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0; border-bottom:2px solid var(--color-divider)">
+      <div style="padding:28px 20px 28px 0; border-right:2px solid var(--color-divider)">
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px">1</div>
+        <div style="font-size:16px">Tell us below what you'd show. A couple of sentences is enough.</div>
+      </div>
+      <div style="padding:28px 20px; border-right:2px solid var(--color-divider)">
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px">2</div>
+        <div style="font-size:16px">We set up a short Zoom call to shape the demo together. First time presenting? Say so.</div>
+      </div>
+      <div style="padding:28px 0 28px 20px">
+        <div style="font-family:var(--font-heading); font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px">3</div>
+        <div style="font-size:16px">We agree on a one-sentence description for the programme. Nothing is published without your permission, and you can say no to filming.</div>
+      </div>
+    </section>
+
+    <section style="display:grid; grid-template-columns:1fr 1fr; gap:48px; padding:44px 0 56px">
+      <div>
+        <h3 style="font-size:26px; margin:0 0 12px">Tell us about your demo</h3>
+        <p style="font-size:16px; max-width:44ch; margin:0 0 8px">The form drafts the message in your own email client, and you send it. I reply personally.</p>
+        <p class="text-muted" style="font-size:14px; margin:0">This page collects no data and sets no cookies. Nothing is sent until you press Send in your email client.</p>
+      </div>
+      <form data-demo-form data-subject="Haluan demota" style="border:2px solid var(--color-divider); padding:24px; display:flex; flex-direction:column; gap:16px">
+        <div class="field"><label for="en-name">Name</label><input class="input" id="en-name" name="name" data-label="Name" required autocomplete="name"></div>
+        <div class="field"><label for="en-what">What would you show?</label><textarea class="input" id="en-what" name="what" data-label="What would you show?" rows="4" required placeholder="I built ..., which ..."></textarea></div>
+        <div class="field"><label for="en-link">Link (optional)</label><input class="input" id="en-link" name="link" data-label="Link" placeholder="https://"></div>
+        <div class="field"><label for="en-len">Length</label><select class="input" id="en-len" name="len" data-label="Length"><option>Lightning demo, about 5 min</option><option>Longer demo, about 10–15 min</option><option>Not sure yet</option></select></div>
+        <div class="field"><label for="en-when">Evening</label><select class="input" id="en-when" name="when" data-label="Evening"><option>Demo night #4 · Wed 16 Dec</option><option>Any upcoming evening</option><option>A later evening</option></select></div>
+        <button type="submit" class="btn btn-primary" style="justify-content:flex-start; font-size:16px; padding:16px 20px; width:100%; box-sizing:border-box; border:0; cursor:pointer">Open email</button>
+        <div class="text-muted" style="font-size:13px">If no email opens, send the same details to <a href="mailto:hei@out-of-context.dev?subject=Haluan%20demota">hei@out-of-context.dev</a>.</div>
+      </form>
+    </section>
+  </div>
+<script>
+  document.querySelectorAll('[data-demo-form]').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = f.elements.name.value.trim();
+      var lines = [];
+      f.querySelectorAll('[data-label]').forEach(function (el) {
+        if (el.value.trim()) lines.push(el.dataset.label.replace(/\?$/, "") + ':\n' + el.value.trim());
+      });
+      window.location.href = 'mailto:hei@out-of-context.dev?subject=' +
+        encodeURIComponent(f.dataset.subject + (name ? ': ' + name : '')) +
+        '&body=' + encodeURIComponent(lines.join('\n\n') + '\n');
+    });
+  });
+</script>
+{% endblock content %}
